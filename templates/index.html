@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CarbonWise | Smart Energy Intelligence</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root {
+    --bg: #07111f;
+    --panel: #101f31;
+    --panel2: #14263a;
+    --green: #4ade80;
+    --cyan: #22d3ee;
+    --yellow: #facc15;
+    --text: #edf6ff;
+    --muted: #9aafc5;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 22px 5%;
+    border-bottom: 1px solid #23374d;
+    background: #0a1728;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--green);
+}
+
+.badge {
+    border: 1px solid #32674c;
+    background: #123124;
+    color: var(--green);
+    padding: 8px 13px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+main {
+    max-width: 1400px;
+    margin: auto;
+    padding: 30px 5%;
+}
+
+.hero {
+    background: linear-gradient(120deg, #123a34, #102a42 65%, #172b49);
+    border: 1px solid #285347;
+    border-radius: 22px;
+    padding: 32px;
+    margin-bottom: 25px;
+}
+
+.eyebrow {
+    color: var(--green);
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    margin: 12px 0;
+    letter-spacing: -1.5px;
+}
+
+.hero p {
+    max-width: 720px;
+    color: #c1d5e6;
+    line-height: 1.7;
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid #253950;
+    border-radius: 17px;
+    padding: 22px;
+    min-width: 0;
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.metric-value {
+    font-size: 29px;
+    font-weight: 750;
+    margin: 14px 0 8px;
+}
+
+.green { color: var(--green); }
+.cyan { color: var(--cyan); }
+.yellow { color: var(--yellow); }
+
+.metric-note {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.section-title {
+    margin: 30px 0 15px;
+    font-size: 21px;
+}
+
+.charts {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 18px;
+}
+
+.chart-card {
+    background: var(--panel);
+    border: 1px solid #253950;
+    border-radius: 17px;
+    padding: 22px;
+    min-width: 0;
+}
+
+.chart-card h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.chart-wrap {
+    position: relative;
+    height: 280px;
+}
+
+.action-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+button {
+    background: var(--green);
+    color: #071b12;
+    border: 0;
+    border-radius: 10px;
+    padding: 13px 19px;
+    font-size: 14px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+button.secondary {
+    background: #1d344b;
+    color: var(--text);
+    border: 1px solid #35516d;
+}
+
+button:focus-visible {
+    outline: 3px solid var(--cyan);
+    outline-offset: 3px;
+}
+
+.status {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.footer {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+@media (max-width: 900px) {
+    .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .charts {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">☀️ Carbon<span>Wise</span></div>
+    <div class="badge">⚛ QUANTUM-ASSISTED ENERGY INTELLIGENCE</div>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="eyebrow">Sustainable campus · Smarter energy</div>
+
+        <h1>Power your campus.<br>Reduce your carbon footprint.</h1>
+
+        <p>
+            Explore how solar generation, battery storage and grid electricity
+            can work together. CarbonWise will use QAOA-based optimization
+            experiments to investigate better energy scheduling.
+        </p>
+
+        <div class="action-row">
+            <button id="loadButton">↻ Refresh Energy Data</button>
+            <button class="secondary" id="quantumButton">
+                ⚛ Quantum Optimization
+            </button>
+        </div>
+
+        <div class="status" id="status">
+            Loading energy data...
+        </div>
+    </section>
+
+    <h2 class="section-title">Campus Energy Overview</h2>
+
+    <section class="metrics">
+
+        <article class="card">
+            <div class="metric-label">☀️ Peak Solar Generation</div>
+            <div class="metric-value yellow" id="solarValue">--</div>
+            <div class="metric-note">Maximum in displayed time slots</div>
+        </article>
+
+        <article class="card">
+            <div class="metric-label">🏫 Peak Campus Demand</div>
+            <div class="metric-value cyan" id="demandValue">--</div>
+            <div class="metric-note">Maximum in displayed time slots</div>
+        </article>
+
+        <article class="card">
+            <div class="metric-label">🔋 Latest Battery Charge</div>
+            <div class="metric-value green" id="batteryValue">--</div>
+            <div class="metric-note">Illustrative state of charge</div>
+        </article>
+
+        <article class="card">
+            <div class="metric-label">⚡ Peak Grid Import</div>
+            <div class="metric-value" id="gridValue">--</div>
+            <div class="metric-note">Maximum in displayed time slots</div>
+        </article>
+
+    </section>
+
+    <h2 class="section-title">Energy Intelligence</h2>
+
+    <section class="charts">
+
+        <article class="chart-card">
+            <h3>Solar Generation vs Campus Demand</h3>
+            <div class="chart-wrap">
+                <canvas id="energyChart"></canvas>
+            </div>
+        </article>
+
+        <article class="chart-card">
+            <h3>Battery State of Charge</h3>
+            <div class="chart-wrap">
+                <canvas id="batteryChart"></canvas>
+            </div>
+        </article>
+
+        <article class="chart-card">
+            <h3>Grid Electricity Import</h3>
+            <div class="chart-wrap">
+                <canvas id="gridChart"></canvas>
+            </div>
+        </article>
+
+        <article class="chart-card">
+            <h3>Grid Electricity Price</h3>
+            <div class="chart-wrap">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </article>
+
+    </section>
+
+    <h2 class="section-title">⚛️ Quantum Optimization Lab</h2>
+
+    <section class="card">
+        <h3>Explore QAOA-based scheduling</h3>
+
+        <p class="metric-note">
+            This dashboard is connected to simulated energy data.
+            The QAOA experiment and validated classical comparison will
+            be connected as separate modules.
+        </p>
+
+        <div id="quantumStatus" class="status">
+            QAOA optimizer not connected yet.
+        </div>
+    </section>
+
+</main>
+
+<div class="footer">
+    CarbonWise · Qiskit Fall Fest 2026 · Track 6
+    <br><br>
+    Prototype using simulated data — not live campus measurements.
+</div>
+
+<script>
+let energyChart;
+let batteryChart;
+let gridChart;
+let priceChart;
+
+const chartColors = {
+    green: "#4ade80",
+    cyan: "#22d3ee",
+    yellow: "#facc15",
+    purple: "#c084fc",
+    grid: "#30445a",
+    text: "#9aafc5"
+};
+
+function createLineChart(canvasId, labels, datasets, yTitle) {
+    return new Chart(document.getElementById(canvasId), {
+        type: "line",
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: "index",
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    labels: { color: "#edf6ff" }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: chartColors.text },
+                    grid: { color: chartColors.grid }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: yTitle,
+                        color: chartColors.text
+                    },
+                    ticks: { color: chartColors.text },
+                    grid: { color: chartColors.grid }
+                }
+            }
+        }
+    });
+}
+
+async function loadEnergy() {
+    const status = document.getElementById("status");
+    status.textContent = "Loading energy data...";
+
+    try {
+        const response = await fetch("/api/energy");
+
+        if (!response.ok) {
+            throw new Error("Could not load energy data.");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("solarValue").textContent =
+            Math.max(...data.solar) + " kW";
+
+        document.getElementById("demandValue").textContent =
+            Math.max(...data.demand) + " kW";
+
+        document.getElementById("batteryValue").textContent =
+            data.battery[data.battery.length - 1] + "%";
+
+        document.getElementById("gridValue").textContent =
+            Math.max(...data.grid) + " kW";
+
+        if (energyChart) energyChart.destroy();
+        if (batteryChart) batteryChart.destroy();
+        if (gridChart) gridChart.destroy();
+        if (priceChart) priceChart.destroy();
+
+        energyChart = createLineChart(
+            "energyChart",
+            data.hours,
+            [
+                {
+                    label: "Solar Generation",
+                    data: data.solar,
+                    borderColor: chartColors.yellow,
+                    backgroundColor: chartColors.yellow,
+                    tension: 0.35
+                },
+                {
+                    label: "Campus Demand",
+                    data: data.demand,
+                    borderColor: chartColors.cyan,
+                    backgroundColor: chartColors.cyan,
+                    tension: 0.35
+                }
+            ],
+            "Power (kW)"
+        );
+
+        batteryChart = createLineChart(
+            "batteryChart",
+            data.hours,
+            [{
+                label: "Battery Charge",
+                data: data.battery,
+                borderColor: chartColors.green,
+                backgroundColor: chartColors.green,
+                tension: 0.35,
+                fill: true
+            }],
+            "Charge (%)"
+        );
+
+        gridChart = createLineChart(
+            "gridChart",
+            data.hours,
+            [{
+                label: "Grid Import",
+                data: data.grid,
+                borderColor: chartColors.purple,
+                backgroundColor: chartColors.purple,
+                tension: 0.35
+            }],
+            "Power (kW)"
+        );
+
+        priceChart = createLineChart(
+            "priceChart",
+            data.hours,
+            [{
+                label: "Electricity Price",
+                data: data.price,
+                borderColor: chartColors.cyan,
+                backgroundColor: chartColors.cyan,
+                tension: 0.35
+            }],
+            "Price (₹/kWh)"
+        );
+
+        status.textContent =
+            "Energy data loaded successfully. Dataset: " +
+            data.data_type + ".";
+
+    } catch (error) {
+        status.textContent =
+            "Unable to load data. Check the Flask terminal and refresh.";
+        console.error(error);
+    }
+}
+
+document.getElementById("loadButton").addEventListener(
+    "click",
+    loadEnergy
+);
+
+document.getElementById("quantumButton").addEventListener(
+    "click",
+    () => {
+        document.getElementById("quantumStatus").textContent =
+            "QAOA is not connected yet. Connect the tested quantum_optimizer.py module before running optimization.";
+    }
+);
+
+loadEnergy();
+</script>
+
+</body>
+</html>
